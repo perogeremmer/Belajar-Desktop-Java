@@ -5,6 +5,7 @@
  */
 package form;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -15,6 +16,9 @@ public class TabelFrame extends javax.swing.JFrame {
 
     // Variable table model
     private DefaultTableModel model;
+    
+    // Variable table temporary model
+    private DefaultTableModel tempModel;
     
     // Variable current id
     private int id = 0;
@@ -41,6 +45,7 @@ public class TabelFrame extends javax.swing.JFrame {
         model.addColumn("ID");
         model.addColumn("Name");
         model.addColumn("Phone Number");
+        model.addColumn("Gender");
         
         // Membuat tombol agar tidak terlihat saat pertama kali dijalankan
         btn_delete.setVisible(false); 
@@ -63,6 +68,11 @@ public class TabelFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         btn_delete = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        cb_gender = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        tf_search = new javax.swing.JTextField();
+        btn_search = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -80,9 +90,6 @@ public class TabelFrame extends javax.swing.JFrame {
         tb_data.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 tb_dataMousePressed(evt);
-            }
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tb_dataMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tb_data);
@@ -105,34 +112,70 @@ public class TabelFrame extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setText("Jenis Kelamin");
+
+        cb_gender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pria", "Wanita" }));
+
+        jLabel4.setText("ID");
+
+        btn_search.setText("Search");
+        btn_search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_searchActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(73, 73, 73)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel1)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 559, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(tf_name, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(tf_phone, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(btn_submit, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(53, 53, 53)
-                            .addComponent(btn_delete, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(62, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(tf_name, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(tf_phone, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(btn_submit, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(53, 53, 53)
+                                    .addComponent(btn_delete, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(42, 42, 42)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(cb_gender, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tf_search, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btn_search, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(tf_search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_search))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tf_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(48, 48, 48)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tf_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cb_gender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(30, 30, 30)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -141,7 +184,7 @@ public class TabelFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_delete)
                     .addComponent(btn_submit))
-                .addGap(53, 53, 53))
+                .addGap(48, 48, 48))
         );
 
         pack();
@@ -154,16 +197,22 @@ public class TabelFrame extends javax.swing.JFrame {
         // Menghapus text field
         tf_name.setText("");
         tf_phone.setText("");
+        tf_search.setText("");
+        
+        // Mengembalikan posisi index gender menjadi 0, yaitu Pria.
+        cb_gender.setSelectedIndex(0);
         
         // Menghilangkan tombol hapus kembali
         btn_delete.setVisible(false);
+        
+        tb_data.setModel(model);
     }
     
     // Fungsi untuk mengambil baris yang diklik
     private String getSelectedRow() {
          int selectedRowIndex = tb_data.getSelectedRow();
          Object selectedObject = (Object) tb_data.getModel().getValueAt(
-            selectedRowIndex, 0
+            selectedRowIndex, 0 // Mendapatkan data ID pada kolom ke 0
          );
          
          return String.valueOf(selectedObject);    
@@ -173,6 +222,7 @@ public class TabelFrame extends javax.swing.JFrame {
     private void store() {
         String name = tf_name.getText();
         String phone = tf_phone.getText();
+        String gender = cb_gender.getSelectedItem().toString();
 
         this.id = this.id + 1;
         String id = String.valueOf(this.id);
@@ -180,7 +230,8 @@ public class TabelFrame extends javax.swing.JFrame {
         Object[] obj = new Object[]{
             id,
             name,
-            phone
+            phone,
+            gender
         };
         
         this.model.addRow(obj);
@@ -188,17 +239,20 @@ public class TabelFrame extends javax.swing.JFrame {
     
     // Fungsi untuk mengubah data yang ada pada tabel
     private void update() {
-        String row = this.getSelectedRow();
-
+        String selectedId = String.valueOf(this.selectedId);
+        
         String name = tf_name.getText();
         String phone = tf_phone.getText();
+        String gender = cb_gender.getSelectedItem().toString();
         
         for (int i = 0; model.getRowCount() > i; i++) {
             String id = (String) model.getValueAt(i, 0);
             
-            if (id.equals(row)) {
+            if (id.equals(selectedId)) {
                 model.setValueAt(name, i, 1);
                 model.setValueAt(phone, i, 2);
+                model.setValueAt(gender, i, 3);
+                break;
             }
         }
     }
@@ -215,36 +269,13 @@ public class TabelFrame extends javax.swing.JFrame {
         this.resetForm();
     }//GEN-LAST:event_btn_submitActionPerformed
 
-    private void tb_dataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tb_dataMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tb_dataMouseClicked
-
     // Fungsi apabila baris pada tabel ditekan oleh mouse
     private void tb_dataMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tb_dataMousePressed
         // TODO add your handling code here:
-        String row = this.getSelectedRow();
+        String row = this.getSelectedRow(); //2
+        this.search(row);
         
-        String name = null;
-        String phone = null;
-
-        // Pencarian baris dan kolom pada model tabel
-        for (int i = 0; model.getRowCount() > i; i++) {
-            String id = (String) model.getValueAt(i, 0);
-            
-            if (id.equals(row)) {
-                this.selectedId = Integer.parseInt(id);
-                
-                name = (String) model.getValueAt(i, 1);
-                phone = (String) model.getValueAt(i, 2);
-                
-                // Tombol 
-                btn_delete.setVisible(true);
-            }
-            
-        }
-        
-        tf_name.setText(name);
-        tf_phone.setText(phone);
+        tf_search.setText(String.valueOf(this.selectedId));
     }//GEN-LAST:event_tb_dataMousePressed
 
     // Fungsi apabila tombol delete ditekan
@@ -255,6 +286,70 @@ public class TabelFrame extends javax.swing.JFrame {
         
         this.resetForm();
     }//GEN-LAST:event_btn_deleteActionPerformed
+
+    private void search(String _id) {
+        
+        String name = null;
+        String phone = null;
+        String gender = null;
+
+        // Pencarian baris dan kolom pada model tabel
+        for (int i = 0; model.getRowCount() > i; i++) {
+            String id = (String) model.getValueAt(i, 0); //1
+            
+            if (id.equals(_id)) {
+                this.selectedId = Integer.parseInt(id);
+                
+                name = (String) model.getValueAt(i, 1);
+                phone = (String) model.getValueAt(i, 2);
+                gender = (String) model.getValueAt(i, 3);
+                
+                // Tombol 
+                btn_delete.setVisible(true);
+                break;
+            }
+            
+        }
+        
+        tf_name.setText(name);
+        tf_phone.setText(phone);
+        cb_gender.setSelectedItem(gender);
+    }
+    
+    private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
+        // TODO add your handling code here:
+        
+        // Mengembalikan selected id menjadi 0
+        this.selectedId = 0;
+        
+        tempModel = new DefaultTableModel();
+        tb_data.setModel(tempModel);
+        
+        // Menambahkan kolom awal pada bagian atas
+        tempModel.addColumn("ID");
+        tempModel.addColumn("Name");
+        tempModel.addColumn("Phone Number");
+        tempModel.addColumn("Gender");
+        
+        String id = tf_search.getText();
+        
+        this.search(id);
+        
+        if (this.selectedId < 1) {
+            JOptionPane.showMessageDialog(null, "We can't found any data", "Data not found", JOptionPane.INFORMATION_MESSAGE);
+            this.resetForm();
+            return;
+        }
+        
+        Object[] obj = new Object[]{
+            this.selectedId,
+            tf_name.getText(),
+            tf_phone.getText(),
+            cb_gender.getSelectedItem().toString()
+        };
+        
+        tempModel.addRow(obj);
+    }//GEN-LAST:event_btn_searchActionPerformed
 
     /**
      * @param args the command line arguments
@@ -293,12 +388,17 @@ public class TabelFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_delete;
+    private javax.swing.JButton btn_search;
     private javax.swing.JButton btn_submit;
+    private javax.swing.JComboBox<String> cb_gender;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tb_data;
     private javax.swing.JTextField tf_name;
     private javax.swing.JTextField tf_phone;
+    private javax.swing.JTextField tf_search;
     // End of variables declaration//GEN-END:variables
 }
