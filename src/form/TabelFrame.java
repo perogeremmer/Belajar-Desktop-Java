@@ -311,6 +311,10 @@ public class TabelFrame extends javax.swing.JFrame {
             
         }
         
+        if(name == null) {
+            this.selectedId = 0;
+        }
+        
         tf_name.setText(name);
         tf_phone.setText(phone);
         cb_gender.setSelectedItem(gender);
@@ -318,10 +322,6 @@ public class TabelFrame extends javax.swing.JFrame {
     
     private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
         // TODO add your handling code here:
-        
-        // Mengembalikan selected id menjadi 0
-        this.selectedId = 0;
-        
         tempModel = new DefaultTableModel();
         tb_data.setModel(tempModel);
         
