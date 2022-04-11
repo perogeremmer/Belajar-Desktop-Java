@@ -5,6 +5,8 @@
  */
 package form;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -114,7 +116,7 @@ public class TabelFrame extends javax.swing.JFrame {
 
         jLabel3.setText("Jenis Kelamin");
 
-        cb_gender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pria", "Wanita" }));
+        cb_gender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pria", "Wanita", "Waria", "Non Gender", "Hemaprodite" }));
 
         jLabel4.setText("ID");
 
@@ -260,6 +262,13 @@ public class TabelFrame extends javax.swing.JFrame {
     // Fungsi apabila tombol submit ditekan
     private void btn_submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_submitActionPerformed
         // TODO add your handling code here:
+        String validation = this.validateForm();
+        
+        if(validation.length() > 0) {
+            JOptionPane.showMessageDialog(null, validation, "Validation Error!", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        
         if (this.selectedId > 0) {
             this.update();
         } else {
@@ -286,7 +295,7 @@ public class TabelFrame extends javax.swing.JFrame {
         
         this.resetForm();
     }//GEN-LAST:event_btn_deleteActionPerformed
-
+    
     private void search(String _id) {
         
         String name = null;
@@ -318,6 +327,39 @@ public class TabelFrame extends javax.swing.JFrame {
         tf_name.setText(name);
         tf_phone.setText(phone);
         cb_gender.setSelectedItem(gender);
+    }
+    
+    private String validateForm() {
+        List<String> flag = new ArrayList<String>();
+        String alert = "";
+
+        String name = tf_name.getText();
+        
+        if(name.length() < 1) {
+            flag.add("Nama tidak boleh kosong!");
+        }
+        
+        if(!name.matches("[a-zA-Z]+")){
+            flag.add("Nama hanya boleh berisi karakter saja!");
+        }
+        
+        String phone = tf_phone.getText();
+        
+        if(phone.length() < 1) {
+            flag.add("Nomor telfon tidak boleh kosong!");
+        }
+        
+        if(!phone.matches("[0-9]+")){
+            flag.add("Nomor telfon hanya boleh berisi angka saja!");
+        }
+        
+        if (flag.size() > 0) {
+            for (String msg : flag) {
+                alert += (msg + "\n");
+            }
+        }
+        
+        return alert;
     }
     
     private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
